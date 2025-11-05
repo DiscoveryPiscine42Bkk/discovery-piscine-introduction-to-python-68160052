@@ -55,3 +55,4 @@ def checkmate(board):
 
     except Exception:
         print("Fail")
+ 
