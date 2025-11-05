@@ -1,8 +1,14 @@
 def checkmate(board):
     try:
+        # แปลง board เป็น grid (array 2D)
         grid = [list(line) for line in board.splitlines() if line.strip() != ""]
+        if not grid:
+            print("Error")
+            return
+
         rows = len(grid)
 
+        # หา King
         king = None
         for i in range(rows):
             for j in range(len(grid[i])):
@@ -18,6 +24,7 @@ def checkmate(board):
         def in_bounds(x, y):
             return 0 <= x < rows and 0 <= y < len(grid[x])
 
+        # Pawn
         pawn_dirs = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
         for dx, dy in pawn_dirs:
             nx, ny = kx + dx, ky + dy
@@ -25,6 +32,7 @@ def checkmate(board):
                 print("Success")
                 return
 
+        # Rook / Queen (แนวตรง)
         straight_dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         for dx, dy in straight_dirs:
             nx, ny = kx + dx, ky + dy
@@ -38,6 +46,7 @@ def checkmate(board):
                 nx += dx
                 ny += dy
 
+        # Bishop / Queen (แนวทแยง)
         diag_dirs = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
         for dx, dy in diag_dirs:
             nx, ny = kx + dx, ky + dy
@@ -51,6 +60,18 @@ def checkmate(board):
                 nx += dx
                 ny += dy
 
+        # Knight
+        knight_moves = [
+            (-2, -1), (-2, 1), (-1, -2), (-1, 2),
+            (1, -2), (1, 2), (2, -1), (2, 1)
+        ]
+        for dx, dy in knight_moves:
+            x, y = kx + dx, ky + dy
+            if in_bounds(x, y) and grid[x][y] == "N":
+                print("Success")
+                return
+
+        # ถ้าไม่มีตัวไหนขู่ King
         print("Fail")
 
     except Exception:
